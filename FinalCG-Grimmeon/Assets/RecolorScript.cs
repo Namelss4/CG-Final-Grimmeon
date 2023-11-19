@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using Color = UnityEngine.Color;
 
 public class RecolorScript : MonoBehaviour
 {
     [SerializeField] private PlayableDirector timeline;
-    [SerializeField] private GameObject movingObj;
-    [SerializeField] private GameObject rotatingObj;
+    //[SerializeField] private GameObject movingObj;
+    //[SerializeField] private GameObject rotatingObj;
 
     [SerializeField] private Slider slider_hue;
     [SerializeField] private Slider slider_saturation;
@@ -19,6 +22,10 @@ public class RecolorScript : MonoBehaviour
     [SerializeField] private ParticleSystem partSys2;
     [SerializeField] private ParticleSystem partSys3;
     [SerializeField] private ParticleSystem partSys4;
+    [SerializeField] private ParticleSystem partSys5;
+
+    [SerializeField] private ParticleSystem footWaves;
+    [SerializeField] private ParticleSystem footLight;
 
 
     private void Start()
@@ -32,7 +39,7 @@ public class RecolorScript : MonoBehaviour
     private void Update()
     {
         ChangeColor();
-        rotatingObj.transform.rotation = Quaternion.identity;
+        //rotatingObj.transform.rotation = Quaternion.identity;
     }
     public void ChangeColor()
     {
@@ -58,6 +65,7 @@ public class RecolorScript : MonoBehaviour
             var mainModule2 = partSys2.main;
             var mainModule3 = partSys3.main;
             var mainModule4 = partSys4.main;
+
 
             mainModule1.startColor = partSysColor;
             mainModule2.startColor = partSysColor;
