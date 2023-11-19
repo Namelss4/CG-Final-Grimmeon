@@ -7,11 +7,12 @@ using UnityEngine.UI;
 public class RecolorScript : MonoBehaviour
 {
     [SerializeField] private PlayableDirector timeline;
-    [SerializeField] private GameObject rig;
+    [SerializeField] private GameObject movingObj;
+    [SerializeField] private GameObject rotatingObj;
 
-    [SerializeField] private Slider slider_R;
-    [SerializeField] private Slider slider_G;
-    [SerializeField] private Slider slider_B;
+    [SerializeField] private Slider slider_hue;
+    [SerializeField] private Slider slider_saturation;
+    [SerializeField] private Slider slider_TimeScale;
     [SerializeField] private Image colorPreview;
 
     [SerializeField] private ParticleSystem partSys1;
@@ -23,33 +24,35 @@ public class RecolorScript : MonoBehaviour
     private void Start()
     {
         //GetAllComponents();
-        ChangeColor();
 
         timeline.stopped += OnTimelineStopped;
         timeline.Play();
     }
+
+    private void Update()
+    {
+        ChangeColor();
+        rotatingObj.transform.rotation = Quaternion.identity;
+    }
     public void ChangeColor()
     {
-        if(slider_R.value == 0 && slider_G.value == 0 && slider_B.value == 0)
+        if (slider_hue.value == 0 && slider_saturation.value == 0)
         {
             Debug.Log("No color value has changed");
         }
         else
         {
-            Color partSysColor = new Color(slider_R.value, slider_G.value, slider_B.value);
+            Color hvsColor = new Color(slider_hue.value, slider_saturation.value, 1, 1);
+
+            Color partSysColor = ColorExtensions.HSVToRGB(hvsColor);
             colorPreview.color = partSysColor;
 
 
             //partSys1.colorOverLifetime.enabled = false;
-            var colorOvrLifetime1 = partSys1.colorOverLifetime;
-            var colorOvrLifetime2 = partSys1.colorOverLifetime;
-            var colorOvrLifetime3 = partSys1.colorOverLifetime;
-            var colorOvrLifetime4 = partSys1.colorOverLifetime;
-
-            colorOvrLifetime1.enabled = false;
-            colorOvrLifetime2.enabled = false;
-            colorOvrLifetime3.enabled = false;
-            colorOvrLifetime4.enabled = false;
+            DisableColorOverLifetime(partSys1);
+            DisableColorOverLifetime(partSys2);
+            DisableColorOverLifetime(partSys3);
+            DisableColorOverLifetime(partSys4);
 
             var mainModule1 = partSys1.main;
             var mainModule2 = partSys2.main;
@@ -71,11 +74,37 @@ public class RecolorScript : MonoBehaviour
         {
             // Rewind and play again to create the loop
             director.time = 0;
-            rig.transform.position = new Vector3(-6.63776809e-05f, 1.20140874f, 0.00292248302f);
-            rig.transform.rotation = Quaternion.identity;  
+            //movingObj.transform.position = Vector3.zero;
             director.Play();
 
 
         }
     }
+
+    void DisableColorOverLifetime(ParticleSystem particle)
+    {
+        var colorOverLifetimeModule = particle.colorOverLifetime;
+        colorOverLifetimeModule.enabled = false;
+    }
+
+    public void ChangeTimeScale()
+    {
+        Time.timeScale = slider_TimeScale.value;
+    }
+
+}
+
+public static class ColorExtensions
+{
+    public static Color RGBToHSV(Color rgbColor)
+    {
+        Color.RGBToHSV(rgbColor, out float h, out float s, out float v);
+        return new Color(h, s, v, rgbColor.a);
+    }
+
+    public static Color HSVToRGB(Color hsvColor)
+    {
+        return Color.HSVToRGB(hsvColor.r, hsvColor.g, hsvColor.b);
+    }
+
 }
