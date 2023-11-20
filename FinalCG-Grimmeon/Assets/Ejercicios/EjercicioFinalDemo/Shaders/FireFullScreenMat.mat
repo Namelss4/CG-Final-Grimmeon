@@ -81,11 +81,11 @@ Material:
     - _QueueOffset: 0
     - _SrcBlend: 5
     - _Surface: 1
-    - _VignetteIntensity: 0.377
-    - _VignetteRadiusPower: 5.12
-    - _VoronoiPower: -0.68
-    - _VoronoiScale: 11.51
-    - _VoronoiSpeed: 3
+    - _VignetteIntensity: 0.572
+    - _VignetteRadiusPower: 17.7
+    - _VoronoiPower: -1.5
+    - _VoronoiScale: 16
+    - _VoronoiSpeed: 4
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0
